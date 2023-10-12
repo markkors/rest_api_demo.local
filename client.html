@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form>
+    <input type="text" name="firstname" placeholder="firstname">
+    <input type="text" name="lastname" placeholder="lastname">
+    <input type="email" name="email" placeholder="email">
+    <input type="date" name="birth" placeholder="birthdate">
+</form>
+
+<button onclick="getDataHelper()">Get Data</button>
+<button onclick="addDataHelper()">Add Data</button>
+
+
+<script>
+
+
+
+    async function addRecord(p) {
+        // post data async with fetch to a url
+        r = await fetch('http://rest_api_demo.local/put', {
+            method: 'PUT',
+            body: p,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => data)
+            .catch(error => error);
+        return r;
+    }
+
+    function addDataHelper() {
+        const form = document.querySelector('form');
+        const data = new FormData(form);
+        const payload = JSON.stringify(Object.fromEntries(data));
+       // console.log(payload);
+
+        document.body.style.backgroundColor= 'red';
+        addAsyncData(payload).then(r => {
+            console.log(r);
+            document.body.style.backgroundColor= 'white';
+        });
+    }
+
+    function getDataHelper() {
+        document.body.style.backgroundColor= 'red';
+        getAsyncData().then(d => {
+            console.log(d)
+            // de hele mikmak om de data in de html te krijgen
+            document.body.style.backgroundColor= 'white';
+        });
+    }
+
+    async function getAsyncData() {
+        // get records async with fetch from a url
+        r = await fetch('http://rest_api_demo.local/get')
+            .then(response => response.json())
+            .then(data => data);
+        return r;
+    }
+
+    async function getAsyncDataOld() {
+        r = await fetch('http://rest_api_demo.local/get')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                return data;
+            });
+    }
+
+
+    async function  addAsyncData(p) {
+        // post data async with fetch to a url
+        r = await fetch('http://rest_api_demo.local/put', {
+            method: 'PUT',
+            body: p,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(response => response.json())
+            .then(data => data);
+        return r;
+    }
+
+</script>
+</body>
+</html>
