@@ -17,10 +17,11 @@ if(isset($url["query"])) {
 
 // check if there is an id in the url
 $parts = explode("/",$url['path']);
-$id = null;
-if(is_numeric($parts[2])) {
-    $id = $parts[2];
-}
+
+//$id = null;
+//if(is_numeric($parts[2])) {
+//    $id = $parts[2];
+//}
 
 // my router
 switch ($parts[1]) {

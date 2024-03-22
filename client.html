@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 0.8em;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,6 +24,11 @@
 <button onclick="getDataHelper()">Get Data</button>
 <button onclick="addDataHelper()">Add Data</button>
 
+<div>
+    <h1>Result</h1>
+    <div id="result"></div>
+</div>
+
 
 <script>
 
@@ -23,7 +36,7 @@
 
     async function addRecord(p) {
         // post data async with fetch to a url
-        r = await fetch('http://rest_api_demo.local/put', {
+        r = await fetch('http://rest-api-demo.local/put', {
             method: 'PUT',
             body: p,
             headers: {
@@ -32,9 +45,12 @@
         })
             .then(response => response.json())
             .then(data => data)
-            .catch(error => error);
+            .catch(error =>
+                console.error('Error:', error)
+            );
         return r;
     }
+
 
     function addDataHelper() {
         const form = document.querySelector('form');
@@ -55,31 +71,60 @@
             console.log(d)
             // de hele mikmak om de data in de html te krijgen
             document.body.style.backgroundColor= 'white';
+            // each item in d is a person object
+            addDatatoHTML(d["data"]);
         });
     }
 
+    function addDatatoHTML(d) {
+        // clear result id
+        document.getElementById('result').innerHTML = '';
+
+        d.forEach(function(item) {
+            let p = new persoon(item.id, item.create, item.voornaam, item.achternaam, item.email, item.geboortedatum);
+            let div = document.createElement('div');
+            div.innerHTML = `${p.voornaam} ${p.achternaam} ${p.email} ${p.geboortedatum}`;
+            document.getElementById('result').appendChild(div);
+        });
+    }
+
+    class persoon {
+        constructor(id,create, voornaam, achternaam, email, geboortedatum) {
+            this.id = id;
+            this.create = create;
+            this.voornaam = voornaam;
+            this.achternaam = achternaam;
+            this.email = email;
+            this.geboortedatum = geboortedatum;
+        }
+    }
+
+
     async function getAsyncData() {
         // get records async with fetch from a url
-        r = await fetch('http://rest_api_demo.local/get')
+        r = await fetch('http://rest-api-demo.local/get')
             .then(response => response.json())
             .then(data => data);
         return r;
     }
 
-    async function getAsyncDataOld() {
-        r = await fetch('http://rest_api_demo.local/get')
-            .then(function(response) {
+
+    // old way of doing async
+    /*async function getAsyncDataOld() {
+        r = await fetch('http://rest-api-demo.local/get')
+            .then(function
+            (response) {
                 return response.json();
             })
             .then(function(data) {
                 return data;
             });
-    }
+    }*/
 
 
     async function  addAsyncData(p) {
         // post data async with fetch to a url
-        r = await fetch('http://rest_api_demo.local/put', {
+        r = await fetch('http://rest-api-demo.local/put', {
             method: 'PUT',
             body: p,
             headers: {

@@ -3,6 +3,9 @@
 spl_autoload_register(function ($class_name) {
     //class directories
 
+    //echo $class_name . '<br>';
+
+
     $source = $_SERVER['DOCUMENT_ROOT'];
     $dirs = [
         $source.'/classes/',

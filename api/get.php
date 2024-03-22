@@ -15,7 +15,7 @@ if ($rm != 'GET') {
     die();
 }
 
-sleep(4);
+//sleep(4);
 
 $sql = new sql();
 $p = new person();
